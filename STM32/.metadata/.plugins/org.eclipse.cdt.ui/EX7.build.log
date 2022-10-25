@@ -1,0 +1,23 @@
+07:35:07 **** Build of configuration Debug for project EX7 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103x6 -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "EX7.elf" @"objects.list"   -mcpu=cortex-m3 -T"E:\HK221\VXL\LAB2\STM32\EX7\STM32F103C6UX_FLASH.ld" --specs=nosys.specs -Wl,-Map="EX7.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: EX7.elf
+ 
+arm-none-eabi-size   EX7.elf 
+arm-none-eabi-objdump -h -S  EX7.elf  > "EX7.list"
+arm-none-eabi-objcopy  -O ihex  EX7.elf  "EX7.hex"
+   text	   data	    bss	    dec	    hex	filename
+   7508	     24	   1656	   9188	   23e4	EX7.elf
+arm-none-eabi-objcopy  -O binary  EX7.elf  "EX7.bin"
+Finished building: default.size.stdout
+ 
+Finished building: EX7.bin
+Finished building: EX7.list
+Finished building: EX7.hex
+ 
+ 
+ 
+
+07:35:08 Build Finished. 0 errors, 0 warnings. (took 1s.755ms)
+

@@ -40,6 +40,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
 
@@ -48,6 +49,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -85,54 +87,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start_IT (& htim2 ) ;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  //set time and state of led
-  int state_led=0;
-  int count_second=0;
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  //led_red: turn on; led_yellow, led_green: turn off
-	  if(state_led==0){
-		  count_second++;
-		  if(count_second>5){
-			  count_second=0;
-			  state_led=1;
-		  }
-	  		  HAL_GPIO_WritePin ( LED_RED_GPIO_Port , LED_RED_Pin ,0);
-	  		  HAL_GPIO_WritePin ( LED_YELLOW_GPIO_Port , LED_YELLOW_Pin ,1);
-	  		  HAL_GPIO_WritePin ( LED_GREEN_GPIO_Port , LED_GREEN_Pin ,0);
-	  	  }
-	  //led_yellow: turn on; led_red, led_green: turn off
-	  if(state_led==1){
-	  		  count_second++;
-	  		  if(count_second>2){
-	  			  count_second=0;
-	  			  state_led=2;
-	  		  }
-	  		  HAL_GPIO_WritePin ( LED_RED_GPIO_Port , LED_RED_Pin ,1);
-	  		  HAL_GPIO_WritePin ( LED_YELLOW_GPIO_Port , LED_YELLOW_Pin ,0);
-	  		  HAL_GPIO_WritePin ( LED_GREEN_GPIO_Port , LED_GREEN_Pin ,0);
-	  	  }
-	  //led_green: turn on; led_red, led_yellow: turn off
-	  if(state_led==2){
-	  		  count_second++;
-	  		  if(count_second>=3){
-	  			  count_second=0;
-	  			  state_led=0;
-	  		  }
-	  		  HAL_GPIO_WritePin ( LED_RED_GPIO_Port , LED_RED_Pin ,1);
-	  		  HAL_GPIO_WritePin ( LED_YELLOW_GPIO_Port , LED_YELLOW_Pin ,1);
-	  		  HAL_GPIO_WritePin ( LED_GREEN_GPIO_Port , LED_GREEN_Pin ,1);
-	  	  }
-	  	HAL_Delay (1000);
   }
   /* USER CODE END 3 */
 }
@@ -173,6 +139,51 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 7999;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 9;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -183,21 +194,120 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, DOT_Pin|LED_RED_Pin|EN0_Pin|EN1_Pin
+                          |EN2_Pin|EN3_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LED_RED_Pin LED_YELLOW_Pin LED_GREEN_Pin */
-  GPIO_InitStruct.Pin = LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, SEG0_Pin|SEG1_Pin|SEG2_Pin|SEG3_Pin
+                          |SEG4_Pin|SEG5_Pin|SEG6_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : DOT_Pin LED_RED_Pin EN0_Pin EN1_Pin
+                           EN2_Pin EN3_Pin */
+  GPIO_InitStruct.Pin = DOT_Pin|LED_RED_Pin|EN0_Pin|EN1_Pin
+                          |EN2_Pin|EN3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : SEG0_Pin SEG1_Pin SEG2_Pin SEG3_Pin
+                           SEG4_Pin SEG5_Pin SEG6_Pin */
+  GPIO_InitStruct.Pin = SEG0_Pin|SEG1_Pin|SEG2_Pin|SEG3_Pin
+                          |SEG4_Pin|SEG5_Pin|SEG6_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
-
+void display7SEG(int count){
+	  // ma hex display7Seg cua 0 den 10
+	  int16_t array[10]={
+			0x40,	//0
+			0x79,	//1
+			0x24,	//2
+			0x30,	//3
+			0x68,	//4
+			0x79,	//5
+			0x4,	//6
+			0x71,	//7
+			0x0,	//8
+			0x20	//9
+	  };
+	  //day gia tri ma hex cua so can hien thi vao thanh ghi
+	  GPIOB->ODR=array[count];
+}
+//counter1 set thoi gian cho led
+int counter1=100;
+//counter2 set thoi gian cho led7segment
+int counter2=50;
+//set trang thai cho led va led7segment
+int state_led=0;
+int state_led7segment=1;
+void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim ){
+		counter1--;
+		counter2--;
+		if(counter1<=0){
+			//set thoi gian cho led
+			counter1=100;
+			if(state_led==0){
+				//led1 bat; led2 tat
+				HAL_GPIO_WritePin(DOT_GPIO_Port, DOT_Pin, 0);
+				HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
+			}
+			if(state_led==1){
+				//led1 tat; led2 bat
+					HAL_GPIO_WritePin(DOT_GPIO_Port, DOT_Pin, 1);
+					HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+			}
+			//set lai gia tri cho state_led
+			state_led=1-state_led;
+		}
+		if(counter2<=0){
+			//set thoi gian cho led7segment
+			counter2=50;
+			if(state_led7segment==0){
+				//led7segment1: bat; led7segment2,3,4:tat
+				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 0);
+				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
+				HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 1);
+				HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 1);
+				display7SEG(1);
+			}
+			if(state_led7segment==1){
+				//led7segment2: bat; led7segment1,3,4:tat
+				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
+				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 0);
+				HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 1);
+				HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 1);
+				display7SEG(2);
+			}
+			if(state_led7segment==2){
+				//led7segment3: bat; led7segment1,2,4:tat
+				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
+				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
+				HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 0);
+				HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 1);
+				display7SEG(3);
+			}
+			if(state_led7segment==3){
+				//led7segment4: bat; led7segment1,2,3:tat
+				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
+				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
+				HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 1);
+				HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 0);
+				display7SEG(0);
+			}
+			state_led7segment++;
+			//set lai gia tri cho state_led7segment
+			if(state_led7segment>=4) state_led7segment=0;
+		}
+}
 /* USER CODE END 4 */
 
 /**
