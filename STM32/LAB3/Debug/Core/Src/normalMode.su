@@ -1,0 +1,4 @@
+normalMode.c:26:6:trafficlight	8	static
+normalMode.c:86:6:displayFour7Segemnt	8	static
+normalMode.c:166:6:setValueLocalModeNormal	4	static
+normalMode.c:183:6:normal_mode	8	static

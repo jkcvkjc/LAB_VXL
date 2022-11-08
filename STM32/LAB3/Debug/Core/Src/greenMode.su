@@ -1,0 +1,5 @@
+greenMode.c:10:6:greenBlinking	8	static
+greenMode.c:30:6:displayTimeGreenAndMode	8	static
+greenMode.c:53:6:increaseTimeGreen	4	static
+greenMode.c:61:6:setValueGreen	4	static
+greenMode.c:71:6:green_mode	8	static
