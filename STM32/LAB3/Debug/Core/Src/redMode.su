@@ -1,5 +1,0 @@
-redMode.c:10:6:redBlinking	8	static
-redMode.c:30:6:displayTimeRedAndMode	8	static
-redMode.c:53:6:increaseTimeRed	4	static
-redMode.c:61:6:setValueRed	4	static
-redMode.c:65:6:red_mode	8	static

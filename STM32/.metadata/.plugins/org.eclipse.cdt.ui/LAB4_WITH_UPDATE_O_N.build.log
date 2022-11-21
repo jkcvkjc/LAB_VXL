@@ -1,0 +1,22 @@
+17:02:59 **** Incremental Build of configuration Debug for project LAB4_WITH_UPDATE_O_N ****
+make -j8 all 
+arm-none-eabi-gcc -o "LAB4_WITH_UPDATE_O_N.elf" @"objects.list"   -mcpu=cortex-m3 -T"E:\HK221\VXL\GIT\STM32\LAB4_WITH_UPDATE_O_N\STM32F103C6UX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB4_WITH_UPDATE_O_N.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB4_WITH_UPDATE_O_N.elf
+ 
+arm-none-eabi-size   LAB4_WITH_UPDATE_O_N.elf 
+arm-none-eabi-objdump -h -S  LAB4_WITH_UPDATE_O_N.elf  > "LAB4_WITH_UPDATE_O_N.list"
+   text	   data	    bss	    dec	    hex	filename
+   7752	     20	   2444	  10216	   27e8	LAB4_WITH_UPDATE_O_N.elf
+arm-none-eabi-objcopy  -O ihex  LAB4_WITH_UPDATE_O_N.elf  "LAB4_WITH_UPDATE_O_N.hex"
+Finished building: default.size.stdout
+arm-none-eabi-objcopy  -O binary  LAB4_WITH_UPDATE_O_N.elf  "LAB4_WITH_UPDATE_O_N.bin"
+ 
+Finished building: LAB4_WITH_UPDATE_O_N.hex
+Finished building: LAB4_WITH_UPDATE_O_N.list
+Finished building: LAB4_WITH_UPDATE_O_N.bin
+ 
+ 
+ 
+
+17:03:00 Build Finished. 0 errors, 0 warnings. (took 853ms)
+

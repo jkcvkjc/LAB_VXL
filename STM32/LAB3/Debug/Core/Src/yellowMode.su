@@ -1,5 +1,0 @@
-yellowMode.c:11:6:yellowBlinking	8	static
-yellowMode.c:31:6:displayTimeYellowAndMode	8	static
-yellowMode.c:54:6:increaseTimeYellow	4	static
-yellowMode.c:62:6:setValueYellow	4	static
-yellowMode.c:72:6:yellow_mode	8	static
