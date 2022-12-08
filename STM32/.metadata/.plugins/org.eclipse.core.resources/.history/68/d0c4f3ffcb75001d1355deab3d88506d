@@ -1,0 +1,17 @@
+/*
+ * global.h
+ *
+ *  Created on: Dec 7, 2022
+ *      Author: ACER
+ */
+
+#ifndef INC_GLOBAL_H_
+#define INC_GLOBAL_H_
+
+#define INIT	0
+#define !		1
+#define !R		2
+#define !RS		3
+#define !RST	4
+
+#endif /* INC_GLOBAL_H_ */
